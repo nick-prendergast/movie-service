@@ -17,24 +17,19 @@ public class CsvService {
         this.omdbService = omdbService;
     }
 
-    Boolean didMovieWinBestPictureAward(String movieName) {
-        return getOscarAwardsListFromCsv(movieName).stream()
+    boolean didMovieWinBestPictureAward(String movieName) {
+        return getOscarAwardsListFromCsv().stream()
                 .anyMatch(x -> x.didMovieWinBestPictureAward(movieName));
     }
 
-    List<AcademyAward> getOscarAwardsListFromCsv(String movieName) {
-
-        if (omdbService.movieExists(movieName)) {
-            try {
-                return new CsvToBeanBuilder(new FileReader("src/main/resources/academy_awards.csv"))
-                        .withType(AcademyAward.class)
-                        .build()
-                        .parse();
-            } catch (FileNotFoundException e) {
-                throw new RuntimeException(e);
-            }
+    List<AcademyAward> getOscarAwardsListFromCsv() {
+        try {
+            return new CsvToBeanBuilder(new FileReader("src/main/resources/academy_awards.csv"))
+                    .withType(AcademyAward.class)
+                    .build()
+                    .parse();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e.getMessage());
         }
-        throw new RuntimeException(movieName + " does not exist");
     }
-
 }

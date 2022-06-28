@@ -1,9 +1,12 @@
 package com.example.movieservice.model;
 
+import com.example.movieservice.validation.MovieValidation;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
@@ -21,9 +24,12 @@ public class Rating {
     private Long id;
 
     @NotEmpty
+    @MovieValidation
     private String title;
 
-    private int rating;
+    @Min(0)
+    @Max(100)
+    private int movieRating;
 
     private BigDecimal boxOffice;
 

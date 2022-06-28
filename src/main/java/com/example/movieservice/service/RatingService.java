@@ -18,13 +18,8 @@ public class RatingService {
     }
 
     public Rating saveRating(Rating movieRating) {
-        if (omdbService.movieExists(movieRating.getTitle())) {
-            Omdb omdb = omdbService.getExistingOmdbMovie();
-            movieRating.setBoxOffice(omdb.getBoxOffice());
-
-            return ratingRepository.save(movieRating);
-        }
-        throw new RuntimeException(movieRating.getTitle() + " does not exist");
-
+        Omdb omdb = omdbService.getOmdbMovie(movieRating.getTitle());
+        movieRating.setBoxOffice(omdb.getBoxOffice());
+        return ratingRepository.save(movieRating);
     }
 }
