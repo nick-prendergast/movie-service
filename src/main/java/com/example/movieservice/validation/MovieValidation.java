@@ -13,14 +13,14 @@ import static java.lang.annotation.ElementType.PARAMETER;
 @Target({FIELD, PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@Constraint(validatedBy = MovieValidator.class)
+@Constraint(validatedBy = {MovieValidator.class, RatingValidator.class})
 public @interface MovieValidation {
     //error message
-     String message() default "Invalid movie: does not exist in omdb";
+    String message() default "Invalid movie: does not exist in omdb";
 
     //represents group of constraints
-     Class<?>[] groups() default {};
+    Class<?>[] groups() default {};
 
     //represents additional information about annotation
-     Class<? extends Payload>[] payload() default {};
+    Class<? extends Payload>[] payload() default {};
 }

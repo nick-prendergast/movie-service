@@ -17,7 +17,7 @@ public class RestExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     ResponseEntity<String> handleConstraintViolationException(ConstraintViolationException e) {
         final StringBuilder errors = new StringBuilder();
-        e.getConstraintViolations().forEach(x -> errors.append(x.getInvalidValue()).append(" - ").append(x.getMessage()));
+        e.getConstraintViolations().forEach(x -> errors.append(x.getMessage()));
         return new ResponseEntity<>("not valid due to :" + errors, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 

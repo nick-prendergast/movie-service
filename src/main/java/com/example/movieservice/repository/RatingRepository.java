@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public interface RatingRepository extends JpaRepository<Rating, Integer> {
 
-    @Query(value = "SELECT r.id, r.title, r.box_office, r.rating from Rating r ORDER BY r.box_office DESC LIMIT 10", nativeQuery = true)
+    @Query(value = "SELECT r.id, r.title, r.box_office, r.movie_rating from Rating r ORDER BY r.box_office DESC LIMIT 10", nativeQuery = true)
     List<Rating> findTop10ByRatingOrderByBoxOffice();
 
 }

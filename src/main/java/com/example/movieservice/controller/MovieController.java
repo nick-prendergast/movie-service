@@ -1,9 +1,10 @@
 package com.example.movieservice.controller;
 
+import com.example.movieservice.dto.RatingDTO;
 import com.example.movieservice.model.Rating;
 import com.example.movieservice.service.MovieService;
 import com.example.movieservice.validation.MovieValidation;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.modelmapper.ModelMapper;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,8 +15,14 @@ import java.util.List;
 @Validated
 public class MovieController {
 
-    @Autowired
     MovieService movieService;
+
+    ModelMapper modelMapper;
+
+    public MovieController(MovieService movieService, ModelMapper modelMapper) {
+        this.movieService = movieService;
+        this.modelMapper = modelMapper;
+    }
 
     @GetMapping("/title/{movieName}")
     public String getMovie(@PathVariable @MovieValidation String movieName) {
@@ -23,7 +30,8 @@ public class MovieController {
     }
 
     @PostMapping("/rating")
-    public Rating rateMovie(@RequestBody @Valid Rating rating) {
+    public Rating rateMovie(@RequestBody @MovieValidation @Valid RatingDTO ratingDto) {
+        Rating rating = modelMapper.map(ratingDto, Rating.class);
         return movieService.rateMovie(rating);
     }
 

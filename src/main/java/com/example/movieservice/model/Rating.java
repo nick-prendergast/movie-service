@@ -1,13 +1,10 @@
 package com.example.movieservice.model;
 
-import com.example.movieservice.validation.MovieValidation;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -20,17 +17,15 @@ public class Rating {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Long id;
 
-    @NotEmpty
-    @MovieValidation
     private String title;
 
-    @Min(0)
-    @Max(100)
+    @JsonProperty("rating")
     private int movieRating;
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private BigDecimal boxOffice;
 
     public void setBoxOffice(String boxOffice) {

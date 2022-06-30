@@ -23,7 +23,7 @@ public class MovieService {
 
     public String isBestPicture(String movieName) {
         if (csvService.didMovieWinBestPictureAward(movieName)) {
-            return movieName + "did win best picture";
+            return movieName + " did win best picture";
         }
         return "did not win best picture";
     }
