@@ -8,9 +8,9 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface RatingRepository extends JpaRepository<Rating, Integer> {
+public interface RatingRepository extends JpaRepository<Rating, Long> {
 
-    @Query(value = "SELECT r.id, r.title, r.box_office, r.movie_rating from Rating r ORDER BY r.box_office DESC LIMIT 10", nativeQuery = true)
+    @Query(value = "SELECT * FROM (SELECT r.id, r.title, r.box_office, r.movie_rating from Rating r ORDER BY r.movie_rating DESC LIMIT 10) AS T1 ORDER BY T1.box_office DESC", nativeQuery = true)
     List<Rating> findTop10ByRatingOrderByBoxOffice();
 
 }

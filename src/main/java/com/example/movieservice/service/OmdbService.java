@@ -10,8 +10,11 @@ import org.springframework.web.util.UriComponentsBuilder;
 @Service
 public class OmdbService {
 
-    @Value("${api-key}")
-    private String apiKey;
+    private final String apiKey;
+
+    public OmdbService(@Value("${api-key}") String apiKey) {
+        this.apiKey = apiKey;
+    }
 
     public Omdb getOmdbMovie(String movieName) {
         RestTemplate restTemplate = new RestTemplate();

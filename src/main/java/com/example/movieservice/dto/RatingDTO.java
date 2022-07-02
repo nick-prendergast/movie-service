@@ -1,6 +1,7 @@
 package com.example.movieservice.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.validation.constraints.Max;
@@ -8,6 +9,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 
 @Data
+@AllArgsConstructor
 public class RatingDTO {
 
     @NotEmpty

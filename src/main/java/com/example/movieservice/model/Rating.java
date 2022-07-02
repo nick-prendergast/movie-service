@@ -4,11 +4,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.math.BigDecimal;
-import java.text.NumberFormat;
-import java.text.ParseException;
-import java.util.Locale;
 
 @Data
 @Entity
@@ -25,22 +25,8 @@ public class Rating {
     @JsonProperty("rating")
     private int movieRating;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    //    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private BigDecimal boxOffice;
 
-    public void setBoxOffice(String boxOffice) {
-        BigDecimal moneyAmount = BigDecimal.ZERO;
 
-        if (!boxOffice.equals("N/A")) {
-            Locale locale = new Locale("en", "US");
-            NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(locale);
-            try {
-                Number money = currencyFormat.parse(boxOffice);
-                moneyAmount = BigDecimal.valueOf(money.doubleValue());
-            } catch (ParseException pe) {
-                pe.printStackTrace();
-            }
-        }
-        this.boxOffice = moneyAmount;
-    }
 }
