@@ -2,8 +2,10 @@
 
 ## About App
 
-This is a "Movie service" RESTful Web Service with 3 end points, using Spring Boot/Hibernate H2 in memory database. 
-It checks
+* This is a "Movie service" RESTful Web Service with 3 end points, using Spring Boot/Hibernate H2 in memory database. 
+* There is a large CSV file containing = data from the oscars between 1927 - 2010, which is queried for results. 
+* When a user inputs a movie title into this service, be it to rate a movie or check against the CSV for oscars, an external OMDB API is first queried to see if the movie even exists. If the movie doesn't, then the services's result will let you know.
+* This OMDB API also gives us the movie's Box office total, this will be returned when rating a movie, and also when requesting the top 10 rated movies it order them by so.
 
 
 ## How to run
@@ -90,6 +92,7 @@ Run as a Spring Boot App, you can send requests via Postman to API outlined in t
 * more coverage of unit tests (at the moment everything is covered, but some coverage is only done by integration tests, finer grain tests may come in handy)
 
 
+### Scale
 
 
 
