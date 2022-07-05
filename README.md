@@ -84,14 +84,14 @@ GET - http://localhost:8080/rating
 * Build with Maven
 * Data storage: (in memory) database
 * Lombok has been used to reduce boilerplate code
-
+------
 ### How to test
-Run as a Spring Boot App, you can send requests via Postman to API outlined in the 'How to run' section
-
+* Run as a Spring Boot App, you can send requests via Postman to API outlined in the 'How to run' section
+------
 ### To do's
 * more coverage of unit tests (at the moment everything is covered, but some coverage is only done by integration tests, finer grain tests may come in handy)
 * Support for mutliple users when saving ratings and getting ratings back (this app currently has no user session support)
-
+------
 
 ### Scaling
 
