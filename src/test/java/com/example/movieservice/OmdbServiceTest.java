@@ -38,7 +38,7 @@ class OmdbServiceTest {
         Omdb result = omdbService.getOmdbMovie("this movie doesn't exist");
 
         Assertions.assertNotNull(result);
-        Assertions.assertEquals("False",result.getResponse());
+        Assertions.assertEquals("False", result.getResponse());
     }
 
 }

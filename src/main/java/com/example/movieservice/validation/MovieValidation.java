@@ -16,7 +16,7 @@ import static java.lang.annotation.ElementType.PARAMETER;
 @Constraint(validatedBy = {MovieValidator.class, RatingValidator.class})
 public @interface MovieValidation {
     //error message
-    String message() default "Invalid movie: does not exist in omdb";
+    String message() default "Invalid movie: does not exist in OMDB";
 
     //represents group of constraints
     Class<?>[] groups() default {};

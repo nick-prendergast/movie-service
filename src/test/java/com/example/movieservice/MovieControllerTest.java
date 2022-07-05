@@ -56,7 +56,7 @@ class MovieControllerTest {
         mvc.perform(get
                         ("/title/{movieName}", "The Hurt Locker111").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isInternalServerError()).andDo(print())
-                .andExpect(MockMvcResultMatchers.content().string("not valid due to :Invalid movie: does not exist in omdb"));
+                .andExpect(MockMvcResultMatchers.content().string("not valid due to :Invalid movie: does not exist in OMDB"));
 
     }
 
@@ -82,7 +82,7 @@ class MovieControllerTest {
         mvc.perform(post
                         ("/rating").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(ratingDTOJson))
                 .andExpect(status().isInternalServerError()).andDo(print())
-                .andExpect(MockMvcResultMatchers.content().string("not valid due to :Invalid movie: does not exist in omdb"));
+                .andExpect(MockMvcResultMatchers.content().string("not valid due to :Invalid movie: does not exist in OMDB"));
 
     }
 

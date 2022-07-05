@@ -37,7 +37,7 @@ class RatingServiceTest {
         ratingService.saveRating(rating);
 
         Optional<Rating> optionalRating = ratingRepository.findById(1L);
-        if (optionalRating.isPresent()){
+        if (optionalRating.isPresent()) {
             Rating ratingResult = optionalRating.get();
             Assertions.assertEquals("The Hurt Locker", ratingResult.getTitle());
             Assertions.assertEquals(20, ratingResult.getMovieRating());
