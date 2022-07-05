@@ -90,10 +90,20 @@ Run as a Spring Boot App, you can send requests via Postman to API outlined in t
 
 ### To do's
 * more coverage of unit tests (at the moment everything is covered, but some coverage is only done by integration tests, finer grain tests may come in handy)
+* Support for mutliple users when saving ratings and getting ratings back (this app currently has no user session support)
 
 
-### Scale
+### Scaling
 
+
+* Containerisation (Docker) - can be used to handle easy launching of your applications and their replicas, if needed. 
+* Node Scaling (Kubernetes) - To enable automated scaling of Docker containers you will need an orchestration tool (such as Kubernetes) that will scale your system based on configured metrics. 
+* Load balancer (Kubernetes) - can be used to distribute clients requests amongst the scaled service nodes, as well as to increase reliability incase of failure.
+* Service discovery (Kubernetes) - when more nodes are added it allows the Load balancer to discover them
+* Monitoring (Grafana) - can be used for displaying health metrics, and useful information. Sentry can be used to display errors.
+* Caching (Redis) - can be used to ease loads on OMDB API, for example the most popular 1000 movies could be stored here. 
+* Sharding (AWS RDS) - Amazon RDS to implement a MySql sharded database architecture to achieve high scalability, high availability, and fault tolerance for data storage. 
+* User sessions (JWT) - use JWT in the request header, so that users can save rated movies to their profile, and request their rating list back based on their ID.
 
 
 
