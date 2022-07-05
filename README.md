@@ -78,7 +78,7 @@ GET - http://localhost:8080/rating
 ```
 
 
-### Spec -
+### Spec
 ------
 * Accepts JSON 
 * Response in JSON 
