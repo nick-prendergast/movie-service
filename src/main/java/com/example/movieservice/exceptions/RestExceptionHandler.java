@@ -16,19 +16,27 @@ public class RestExceptionHandler {
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     ResponseEntity<String> handleConstraintViolationException(ConstraintViolationException e) {
-        final StringBuilder errors = new StringBuilder();
-        e.getConstraintViolations().forEach(x -> errors.append(x.getMessage()));
-        return new ResponseEntity<>("not valid due to :" + errors, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>("not valid due to :" + getErrorsConstraintViolationException(e), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     ResponseEntity<String> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+        return new ResponseEntity<>("not valid due to validation error: " + getErrorsMethodArgumentNotValidException(e), HttpStatus.BAD_REQUEST);
+    }
+
+    private StringBuilder getErrorsConstraintViolationException(ConstraintViolationException e) {
+        final StringBuilder errors = new StringBuilder();
+        e.getConstraintViolations().forEach(x -> errors.append(x.getMessage()));
+        return errors;
+    }
+
+    private StringBuilder getErrorsMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         final StringBuilder errors = new StringBuilder();
         for (final FieldError error : e.getBindingResult().getFieldErrors()) {
             errors.append(error.getField()).append(": ").append(error.getDefaultMessage());
         }
-        return new ResponseEntity<>("not valid due to validation error: " + errors, HttpStatus.BAD_REQUEST);
+        return errors;
     }
 
 }

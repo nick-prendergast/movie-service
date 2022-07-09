@@ -23,10 +23,13 @@ class RatingServiceTest {
     @Value("${api-key}")
     private String apiKey;
 
+    @Value("${omdb-url}")
+    private String omdbUrl;
+
     @BeforeEach
     void setUp() {
-        OmdbService omdbService = new OmdbService(apiKey);
-        ratingService = new RatingService(omdbService, ratingRepository);
+        OmdbService omdbService = new OmdbService(apiKey, omdbUrl);
+        ratingService = new RatingService(ratingRepository, omdbService);
     }
 
     @Test

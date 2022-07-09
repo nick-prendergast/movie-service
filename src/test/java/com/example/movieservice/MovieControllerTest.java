@@ -1,6 +1,6 @@
 package com.example.movieservice;
 
-import com.example.movieservice.dto.RatingDTO;
+import com.example.movieservice.dto.RatingDto;
 import com.example.movieservice.model.Rating;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -70,7 +70,7 @@ class MovieControllerTest {
                 .andExpect(status().isOk()).andDo(print())
                 .andExpect(MockMvcResultMatchers.jsonPath("title").value("The Hurt Locker"))
                 .andExpect(MockMvcResultMatchers.jsonPath("boxOffice").value("17017811"))
-                .andExpect(MockMvcResultMatchers.jsonPath("rating").value(85));
+                .andExpect(MockMvcResultMatchers.jsonPath("movieRating").value(85));
 
     }
 
@@ -136,7 +136,7 @@ class MovieControllerTest {
         mvc.perform(post
                 ("/rating").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(ratingDTOJson11)).andExpect(status().isOk());
         MvcResult test = mvc.perform(get
-                        ("/rating").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                        ("/rating/10").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk()).andDo(print()).andReturn();
 
         List<Rating> topTenList = Arrays.asList(new ObjectMapper().readValue(test.getResponse().getContentAsString(), Rating[].class));
@@ -150,8 +150,8 @@ class MovieControllerTest {
     }
 
     private String ratingJson(String The_Hurt_Locker, int movieRating) throws JsonProcessingException {
-        RatingDTO ratingDTO = new RatingDTO(The_Hurt_Locker, movieRating);
-        return objectMapper.writeValueAsString(ratingDTO);
+        RatingDto ratingDto = new RatingDto(The_Hurt_Locker, movieRating);
+        return objectMapper.writeValueAsString(ratingDto);
     }
 
 

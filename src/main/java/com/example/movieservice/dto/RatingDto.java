@@ -1,6 +1,5 @@
 package com.example.movieservice.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -10,12 +9,11 @@ import javax.validation.constraints.NotEmpty;
 
 @Data
 @AllArgsConstructor
-public class RatingDTO {
+public class RatingDto {
 
     @NotEmpty
     private String title;
 
-    @JsonProperty("rating")
     @Min(value = 0, message = "number between 0 - 100 required")
     @Max(value = 100, message = "number between 0 - 100 required")
     private int movieRating;

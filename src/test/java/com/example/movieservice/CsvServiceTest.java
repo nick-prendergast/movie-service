@@ -24,10 +24,13 @@ class CsvServiceTest {
     @Value("${api-key}")
     String apiKey;
 
+    @Value("omdb-url")
+    String omdbUrl;
+
     @BeforeEach
     void setup() {
-        OmdbService omdbService = new OmdbService(apiKey);
-        csvService = new CsvService(omdbService, csvFile);
+        OmdbService omdbService = new OmdbService(apiKey, omdbUrl);
+        csvService = new CsvService(csvFile);
     }
 
     @Test

@@ -1,31 +1,27 @@
 package com.example.movieservice.validation;
 
-import com.example.movieservice.model.Omdb;
+import com.example.movieservice.model.OmdbMovieDto;
 import com.example.movieservice.service.OmdbService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
+@Slf4j
+@RequiredArgsConstructor
 public class MovieValidator implements ConstraintValidator<MovieValidation, String> {
 
-    Logger logger = LoggerFactory.getLogger(MovieValidator.class);
-
-    OmdbService omdbService;
-
-    public MovieValidator(OmdbService omdbService) {
-        this.omdbService = omdbService;
-    }
+    private final OmdbService omdbService;
 
     @Override
     public boolean isValid(String movieName, ConstraintValidatorContext context) {
-        Omdb omdbMovie = omdbService.getOmdbMovie(movieName);
-        if (omdbMovie.getResponse().equals("True")) {
-            logger.info("{} was found on OMDB", movieName);
+        OmdbMovieDto omdbMovieDtoMovie = omdbService.getOmdbMovie(movieName);
+        if (omdbMovieDtoMovie.getResponse().equals("True")) {
+            log.info("{} was found on OMDB", movieName);
             return true;
         }
-        logger.info("{} was not found on OMDB", movieName);
+        log.info("{} was not found on OMDB", movieName);
         return false;
     }
 }

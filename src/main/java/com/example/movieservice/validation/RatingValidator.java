@@ -1,32 +1,28 @@
 package com.example.movieservice.validation;
 
-import com.example.movieservice.dto.RatingDTO;
-import com.example.movieservice.model.Omdb;
+import com.example.movieservice.dto.RatingDto;
+import com.example.movieservice.model.OmdbMovieDto;
 import com.example.movieservice.service.OmdbService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-public class RatingValidator implements ConstraintValidator<MovieValidation, RatingDTO> {
+@Slf4j
+@RequiredArgsConstructor
+public class RatingValidator implements ConstraintValidator<MovieValidation, RatingDto> {
 
-    Logger logger = LoggerFactory.getLogger(RatingValidator.class);
-
-    OmdbService omdbService;
-
-    public RatingValidator(OmdbService omdbService) {
-        this.omdbService = omdbService;
-    }
+    private final OmdbService omdbService;
 
     @Override
-    public boolean isValid(RatingDTO rating, ConstraintValidatorContext context) {
-        Omdb omdbMovie = omdbService.getOmdbMovie(rating.getTitle());
-        if (omdbMovie.getResponse().equals("True")) {
-            logger.info("{} was found on OMDB", rating.getTitle());
+    public boolean isValid(RatingDto rating, ConstraintValidatorContext context) {
+        OmdbMovieDto omdbMovieDtoMovie = omdbService.getOmdbMovie(rating.getTitle());
+        if (omdbMovieDtoMovie.getResponse().equals("True")) {
+            log.info("{} was found on OMDB", rating.getTitle());
             return true;
         }
-        logger.info("{} was not found on OMDB", rating.getTitle());
+        log.info("{} was not found on OMDB", rating.getTitle());
         return false;
     }
 }

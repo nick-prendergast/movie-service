@@ -1,10 +1,10 @@
 package com.example.movieservice.service;
 
-import com.example.movieservice.model.Omdb;
+import com.example.movieservice.model.OmdbMovieDto;
 import com.example.movieservice.model.Rating;
 import com.example.movieservice.repository.RatingRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -13,31 +13,25 @@ import java.text.ParseException;
 import java.util.Locale;
 
 @Service
+@Slf4j
+@RequiredArgsConstructor
 public class RatingService {
 
-    Logger logger = LoggerFactory.getLogger(RatingService.class);
+    private final RatingRepository ratingRepository;
 
-
-    RatingRepository ratingRepository;
-
-    OmdbService omdbService;
-
-    public RatingService(OmdbService omdbService, RatingRepository ratingRepository) {
-        this.omdbService = omdbService;
-        this.ratingRepository = ratingRepository;
-    }
+    private final OmdbService omdbService;
 
     public Rating saveRating(Rating movieRating) {
-        Omdb omdb = omdbService.getOmdbMovie(movieRating.getTitle());
-        BigDecimal boxOffice = covertDollarStringToBigDecimal(omdb.getBoxOffice());
+        OmdbMovieDto omdbMovieDto = omdbService.getOmdbMovie(movieRating.getTitle());
+        BigDecimal boxOffice = covertDollarStringToBigDecimal(omdbMovieDto.getBoxOffice());
         movieRating.setBoxOffice(boxOffice);
-        logger.info("saving movie rating to repo");
+        log.info("saving movie rating to repo");
         return ratingRepository.save(movieRating);
     }
 
     private BigDecimal covertDollarStringToBigDecimal(String boxOffice) {
         BigDecimal moneyAmount = BigDecimal.ZERO;
-        logger.info("converting {} to BigDecimal", boxOffice);
+        log.info("converting {} to BigDecimal", boxOffice);
 
         if (!boxOffice.equals("N/A")) {
             Locale locale = new Locale("en", "US");
@@ -46,7 +40,7 @@ public class RatingService {
                 Number money = currencyFormat.parse(boxOffice);
                 moneyAmount = BigDecimal.valueOf(money.doubleValue());
             } catch (ParseException pe) {
-                logger.error(pe.getMessage());
+                log.error(pe.getMessage());
             }
         }
         return moneyAmount;

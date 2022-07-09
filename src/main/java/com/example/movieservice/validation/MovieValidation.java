@@ -15,12 +15,10 @@ import static java.lang.annotation.ElementType.PARAMETER;
 @Documented
 @Constraint(validatedBy = {MovieValidator.class, RatingValidator.class})
 public @interface MovieValidation {
-    //error message
+
     String message() default "Invalid movie: does not exist in OMDB";
 
-    //represents group of constraints
     Class<?>[] groups() default {};
 
-    //represents additional information about annotation
     Class<? extends Payload>[] payload() default {};
 }

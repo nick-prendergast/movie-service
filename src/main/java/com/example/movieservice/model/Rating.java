@@ -22,11 +22,8 @@ public class Rating {
 
     private String title;
 
-    @JsonProperty("rating")
     private int movieRating;
 
-    //    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private BigDecimal boxOffice;
-
 
 }

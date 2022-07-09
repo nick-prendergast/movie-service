@@ -9,19 +9,15 @@ import javax.validation.constraints.NotEmpty;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Omdb {
+public class OmdbMovieDto {
 
     @MovieValidation
-    @JsonProperty("Title")
     private String title;
 
-    @JsonProperty("Awards")
     private String awards;
 
-    @JsonProperty("BoxOffice")
     private String boxOffice;
 
-    @JsonProperty("Response")
     private String response;
 
     @NotEmpty
