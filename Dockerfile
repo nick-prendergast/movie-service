@@ -18,8 +18,10 @@ RUN chmod 755 /app/mvnw
 RUN ./mvnw dependency:go-offline -B
 
 RUN ./mvnw package -DskipTests
+
 RUN ls -al
 
-
+COPY wait-for-it.sh /wait-for-it.sh
+RUN chmod +x /wait-for-it.sh
 
 ENTRYPOINT ["java","-jar","target/movie-service-0.0.1-SNAPSHOT.jar"]

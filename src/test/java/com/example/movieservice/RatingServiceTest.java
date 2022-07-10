@@ -1,5 +1,6 @@
 package com.example.movieservice;
 
+import com.example.movieservice.configuration.ApiClient;
 import com.example.movieservice.model.Rating;
 import com.example.movieservice.repository.RatingRepository;
 import com.example.movieservice.service.OmdbService;
@@ -28,9 +29,18 @@ class RatingServiceTest {
     @Value("${omdb-url}")
     private String omdbUrl;
 
+    private ApiClient apiClient;
+
+
+//    @BeforeEach
+//    void setUp() {
+//        OmdbService omdbService = new OmdbService(apiKey, omdbUrl);
+//        ratingService = new RatingService(ratingRepository, omdbService);
+//    }
+
     @BeforeEach
     void setUp() {
-        OmdbService omdbService = new OmdbService(apiKey, omdbUrl);
+        OmdbService omdbService = new OmdbService(apiKey, omdbUrl, apiClient);
         ratingService = new RatingService(ratingRepository, omdbService);
     }
 

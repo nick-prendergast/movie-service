@@ -1,5 +1,6 @@
 package com.example.movieservice;
 
+import com.example.movieservice.configuration.ApiClient;
 import com.example.movieservice.model.AcademyAward;
 import com.example.movieservice.service.CsvService;
 import com.example.movieservice.service.OmdbService;
@@ -14,7 +15,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
-class CsvServiceTest {
+class CsvServiceTest  {
 
     CsvService csvService;
 
@@ -27,9 +28,17 @@ class CsvServiceTest {
     @Value("omdb-url")
     String omdbUrl;
 
+    ApiClient apiClient;
+
+//    @BeforeEach
+//    void setup() {
+//        OmdbService omdbService = new OmdbService(apiKey, omdbUrl);
+//        csvService = new CsvService(csvFile);
+//    }
+
     @BeforeEach
     void setup() {
-        OmdbService omdbService = new OmdbService(apiKey, omdbUrl);
+        OmdbService omdbService = new OmdbService(apiKey, omdbUrl, apiClient);
         csvService = new CsvService(csvFile);
     }
 

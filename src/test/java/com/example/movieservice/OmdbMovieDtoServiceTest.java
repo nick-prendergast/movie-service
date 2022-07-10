@@ -1,5 +1,6 @@
 package com.example.movieservice;
 
+import com.example.movieservice.configuration.ApiClient;
 import com.example.movieservice.model.OmdbMovieDto;
 import com.example.movieservice.service.OmdbService;
 import org.junit.jupiter.api.Assertions;
@@ -19,15 +20,18 @@ class OmdbMovieDtoServiceTest {
     @Value("${omdb-url}")
     private String omdbUrl;
 
+    private ApiClient apiClient;
+
+
     @BeforeEach
     void setup() {
-        omdbService = new OmdbService(apiKey, omdbUrl);
+        omdbService = new OmdbService(apiKey, omdbUrl, apiClient);
     }
 
 
     @Test
     void getOmdbMovie_Test() {
-        OmdbService omdbService = new OmdbService(apiKey, omdbUrl);
+//        OmdbService omdbService = new OmdbService(apiKey, omdbUrl);
         OmdbMovieDto result = omdbService.getOmdbMovie("The Hurt Locker");
 
         Assertions.assertNotNull(result);
@@ -37,7 +41,7 @@ class OmdbMovieDtoServiceTest {
 
     @Test
     void getOmdbMovie_invalidMovie_Test() {
-        OmdbService omdbService = new OmdbService(apiKey, omdbUrl);
+//        OmdbService omdbService = new OmdbService(apiKey, omdbUrl);
         OmdbMovieDto result = omdbService.getOmdbMovie("this movie doesn't exist");
 
         Assertions.assertNotNull(result);
