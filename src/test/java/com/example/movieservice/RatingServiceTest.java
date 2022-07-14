@@ -1,6 +1,7 @@
 package com.example.movieservice;
 
 import com.example.movieservice.configuration.ApiClient;
+import com.example.movieservice.configuration.ApiKeyConfig;
 import com.example.movieservice.model.Rating;
 import com.example.movieservice.repository.RatingRepository;
 import com.example.movieservice.service.OmdbService;
@@ -9,7 +10,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 
@@ -22,25 +22,19 @@ class RatingServiceTest {
 
     @Autowired
     RatingRepository ratingRepository;
+
     RatingService ratingService;
-    @Value("${api-key}")
-    private String apiKey;
 
-    @Value("${omdb-url}")
-    private String omdbUrl;
-
+    @Autowired
     private ApiClient apiClient;
 
-
-//    @BeforeEach
-//    void setUp() {
-//        OmdbService omdbService = new OmdbService(apiKey, omdbUrl);
-//        ratingService = new RatingService(ratingRepository, omdbService);
-//    }
+    @Autowired
+    private ApiKeyConfig apiKeyConfig;
 
     @BeforeEach
     void setUp() {
-        OmdbService omdbService = new OmdbService(apiKey, omdbUrl, apiClient);
+        apiKeyConfig.setApiKey("2a0ebc3f");
+        OmdbService omdbService = new OmdbService(apiClient, apiKeyConfig);
         ratingService = new RatingService(ratingRepository, omdbService);
     }
 

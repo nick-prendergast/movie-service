@@ -12,6 +12,7 @@ import javax.validation.constraints.NotEmpty;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+//@JsonNaming(PropertyNamingStrategy..class)
 public class RatingDto {
 
     @NotEmpty

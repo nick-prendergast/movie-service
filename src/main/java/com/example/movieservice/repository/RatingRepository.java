@@ -15,5 +15,4 @@ public interface RatingRepository extends JpaRepository<Rating, Long> {
     List<Rating> findTopMoviesByRatingOrderByBoxOffice(@Param("findTopNMovies") int findTopNMovies);
 
 
-
 }

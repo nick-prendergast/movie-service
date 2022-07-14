@@ -7,9 +7,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -25,6 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class MovieControllerTest {
 
     @Autowired
@@ -33,10 +36,13 @@ class MovieControllerTest {
     @Autowired
     MockMvc mvc;
 
+    @Value("${movie-service.api-key}")
+    private String apiKey;
+
     @Test
     void getMovie_MovieWinsBestPicture_Test() throws Exception {
         mvc.perform(get
-                        ("/title/{movieName}", "The Hurt Locker").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                        ("/title/{movieName}/apikey={apiKey}", "The Hurt Locker", apiKey).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk()).andDo(print())
                 .andExpect(MockMvcResultMatchers.content().string("The Hurt Locker did win best picture"));
 
@@ -45,7 +51,7 @@ class MovieControllerTest {
     @Test
     void getMovie_MovieDoesNotWinBestPicture_Test() throws Exception {
         mvc.perform(get
-                        ("/title/{movieName}", "Toy Story").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                        ("/title/{movieName}/apikey={apiKey}", "Toy Story", apiKey).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk()).andDo(print())
                 .andExpect(MockMvcResultMatchers.content().string("did not win best picture"));
 
@@ -54,7 +60,7 @@ class MovieControllerTest {
     @Test
     void getMovie_invalidMovie_Test() throws Exception {
         mvc.perform(get
-                        ("/title/{movieName}", "The Hurt Locker111").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                        ("/title/{movieName}/apikey={apiKey}", "The Hurt Locker111", apiKey).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isInternalServerError()).andDo(print())
                 .andExpect(MockMvcResultMatchers.content().string("not valid due to :Invalid movie: does not exist in OMDB"));
 
@@ -66,7 +72,7 @@ class MovieControllerTest {
         String ratingDTOJson = ratingJson("The Hurt Locker", 85);
 
         mvc.perform(post
-                        ("/rating").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(ratingDTOJson))
+                        ("/rating/apikey={apiKey}", apiKey).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(ratingDTOJson))
                 .andExpect(status().isOk()).andDo(print())
                 .andExpect(MockMvcResultMatchers.jsonPath("title").value("The Hurt Locker"))
                 .andExpect(MockMvcResultMatchers.jsonPath("boxOffice").value("17017811"))
@@ -80,7 +86,7 @@ class MovieControllerTest {
         String ratingDTOJson = ratingJson("The Hurt Locker111", 85);
 
         mvc.perform(post
-                        ("/rating").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(ratingDTOJson))
+                        ("/rating/apikey={apiKey}", apiKey).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(ratingDTOJson))
                 .andExpect(status().isInternalServerError()).andDo(print())
                 .andExpect(MockMvcResultMatchers.content().string("not valid due to :Invalid movie: does not exist in OMDB"));
 
@@ -92,7 +98,7 @@ class MovieControllerTest {
         String ratingDTOJson = ratingJson("The Hurt Locker111", 101);
 
         mvc.perform(post
-                        ("/rating").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(ratingDTOJson))
+                        ("/rating/apikey={apiKey}", apiKey).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(ratingDTOJson))
                 .andExpect(status().isBadRequest()).andDo(print())
                 .andExpect(MockMvcResultMatchers.content().string("not valid due to validation error: movieRating: number between 0 - 100 required"));
 
@@ -114,27 +120,27 @@ class MovieControllerTest {
 
 
         mvc.perform(post
-                ("/rating").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(ratingDTOJson1)).andExpect(status().isOk());
+                ("/rating/apikey={apiKey}", apiKey).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(ratingDTOJson1)).andExpect(status().isOk());
         mvc.perform(post
-                ("/rating").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(ratingDTOJson2)).andExpect(status().isOk());
+                ("/rating/apikey={apiKey}", apiKey).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(ratingDTOJson2)).andExpect(status().isOk());
         mvc.perform(post
-                ("/rating").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(ratingDTOJson3)).andExpect(status().isOk());
+                ("/rating/apikey={apiKey}", apiKey).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(ratingDTOJson3)).andExpect(status().isOk());
         mvc.perform(post
-                ("/rating").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(ratingDTOJson4)).andExpect(status().isOk());
+                ("/rating/apikey={apiKey}", apiKey).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(ratingDTOJson4)).andExpect(status().isOk());
         mvc.perform(post
-                ("/rating").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(ratingDTOJson5)).andExpect(status().isOk());
+                ("/rating/apikey={apiKey}", apiKey).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(ratingDTOJson5)).andExpect(status().isOk());
         mvc.perform(post
-                ("/rating").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(ratingDTOJson6)).andExpect(status().isOk());
+                ("/rating/apikey={apiKey}", apiKey).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(ratingDTOJson6)).andExpect(status().isOk());
         mvc.perform(post
-                ("/rating").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(ratingDTOJson7)).andExpect(status().isOk());
+                ("/rating/apikey={apiKey}", apiKey).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(ratingDTOJson7)).andExpect(status().isOk());
         mvc.perform(post
-                ("/rating").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(ratingDTOJson8)).andExpect(status().isOk());
+                ("/rating/apikey={apiKey}", apiKey).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(ratingDTOJson8)).andExpect(status().isOk());
         mvc.perform(post
-                ("/rating").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(ratingDTOJson9)).andExpect(status().isOk());
+                ("/rating/apikey={apiKey}", apiKey).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(ratingDTOJson9)).andExpect(status().isOk());
         mvc.perform(post
-                ("/rating").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(ratingDTOJson10)).andExpect(status().isOk());
+                ("/rating/apikey={apiKey}", apiKey).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(ratingDTOJson10)).andExpect(status().isOk());
         mvc.perform(post
-                ("/rating").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(ratingDTOJson11)).andExpect(status().isOk());
+                ("/rating/apikey={apiKey}", apiKey).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(ratingDTOJson11)).andExpect(status().isOk());
         MvcResult test = mvc.perform(get
                         ("/rating/10").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk()).andDo(print()).andReturn();

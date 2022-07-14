@@ -1,13 +1,12 @@
 package com.example.movieservice;
 
-import com.example.movieservice.configuration.ApiClient;
+import com.example.movieservice.configuration.ConfigProperties;
 import com.example.movieservice.model.AcademyAward;
 import com.example.movieservice.service.CsvService;
-import com.example.movieservice.service.OmdbService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
@@ -15,36 +14,21 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
-class CsvServiceTest  {
+class CsvServiceTest {
 
     CsvService csvService;
 
-    @Value("${csv-file}")
-    String csvFile;
-
-    @Value("${api-key}")
-    String apiKey;
-
-    @Value("omdb-url")
-    String omdbUrl;
-
-    ApiClient apiClient;
-
-//    @BeforeEach
-//    void setup() {
-//        OmdbService omdbService = new OmdbService(apiKey, omdbUrl);
-//        csvService = new CsvService(csvFile);
-//    }
+    @Autowired
+    ConfigProperties configProperties;
 
     @BeforeEach
     void setup() {
-        OmdbService omdbService = new OmdbService(apiKey, omdbUrl, apiClient);
-        csvService = new CsvService(csvFile);
+        csvService = new CsvService(configProperties);
     }
 
     @Test
     void testValueSetup() {
-        assertNotNull(csvFile);
+        assertNotNull(configProperties.getCsvFile());
     }
 
     @Test
